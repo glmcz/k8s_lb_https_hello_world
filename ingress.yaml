@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: srs-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.global-static-ip-name: "kubernetes-ingress"
+    cert-manager.io/issuer: "letsencrypt-production"
+spec:
+  ingressClassName: nginx
+  tls:
+      - hosts:
+        - srscloud.uk
+        secretName: tls-cloudflare
+  rules:
+    - host: srscloud.uk
+    - http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: srs
+                port:
+                  number: 443

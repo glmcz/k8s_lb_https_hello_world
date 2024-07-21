@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: srs
+  labels:
+    app: srs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: srs
+  template:
+    metadata:
+      name: srs
+      labels:
+        app: srs
+    spec:
+      containers:
+        - name: srs
+          image: us-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+      restartPolicy: Always
+      
